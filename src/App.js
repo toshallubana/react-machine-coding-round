@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import FolderCreation from './Components/FolderCreation';
+import {explorer} from './Components/FolderCreation/data'
+import useTraverseTree from './hooks/useTraverseTree';
 
 function App() {
+  const [folderStructure, setFolderStructure] = useState(explorer);
+
+  const { insertNode } = useTraverseTree();
+
+  const handleInsertNode = (folderId, item, isFolder) => {
+    const finalTree = insertNode(folderStructure, folderId, item , isFolder)
+    setFolderStructure(finalTree);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App flex">
+      <FolderCreation explorer={explorer} handleInsertNode={handleInsertNode} />
     </div>
   );
 }
