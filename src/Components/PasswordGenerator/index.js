@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import usePasswordGenerator from "./usePasswordGenerator";
+import PasswordStength from '../../hooks/StrengethChecker'
 
 const PasswordGenerator = () => {
   const [length, setLength] = useState(4);
@@ -10,7 +11,8 @@ const PasswordGenerator = () => {
     { title: "Include Symbols", state: false },
   ]);
 
-  const {password, errorMessage, generatePassword} = usePasswordGenerator();
+  const [copy, setCopy] = useState(false);
+  const { password, errorMessage, generatePassword } = usePasswordGenerator();
 
   const handleCheckBoxChange = (i) => {
     const updatedCheckboxData = [...checkBoxData];
@@ -18,15 +20,24 @@ const PasswordGenerator = () => {
     setCheckBoxData(updatedCheckboxData);
   };
 
-  console.log(password, '')
+  const handleCopy = () => {
+    navigator.clipboard.writeText(password);
+    setCopy(true)
+    setTimeout(() => {
+      setCopy(false)
+    }, 1000)
+  }
 
   return (
     <div className="flex flex-col gap-4 bg-[#24232b] p-6">
       {/* Header */}
       <div className="flex justify-between font-[20px]">
         <div className="text-white">{password}</div>
-        <button className="text-white bg-[#2a8b8b] rounded-md p-2 font-medium cursor-pointer uppercase">
-          Copy
+        <button
+          className="text-white bg-[#2a8b8b] rounded-md p-2 font-medium cursor-pointer uppercase"
+          onClick={handleCopy}
+        >
+          {copy ? 'Copied✅': 'Copy'}
         </button>
       </div>
       {/* check character length */}
@@ -59,12 +70,14 @@ const PasswordGenerator = () => {
           );
         })}
       </div>
-      <button className="bg-[#2a8b8b] p-2 uppercase rounded-md" onClick={() => generatePassword(checkBoxData, length)}>
+      <PasswordStength password={password}/>
+      <button
+        className="bg-[#2a8b8b] p-2 uppercase rounded-md"
+        onClick={() => generatePassword(checkBoxData, length)}
+      >
         Generte Password
       </button>
-      {
-        errorMessage && <span className="text-red">{errorMessage}</span>
-      }
+      {errorMessage && <span className="text-red">{errorMessage}</span>}
     </div>
   );
 };

@@ -38,6 +38,7 @@ const usePasswordGenerator = () => {
         for( let i = 0; i < length; i++) {
             const randomIdex  = Math.floor(Math.random() * charSet.length)
             console.log(randomIdex,'randomIdex')
+            console.log(charSet, charSet[randomIdex]);
             generatedPassword += charSet[randomIdex]
         }
         setPassword(generatedPassword)
