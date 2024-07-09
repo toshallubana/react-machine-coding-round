@@ -1,10 +1,12 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import FolderCreation from './Components/FolderCreation';
-import {explorer} from './Components/FolderCreation/data'
-import useTraverseTree from './hooks/useTraverseTree';
-import Pagination from './Components/Pagination';
-import PasswordGenerator from './Components/PasswordGenerator';
+// import FolderCreation from './Components/FolderCreation';
+// import {explorer} from './Components/FolderCreation/data'
+// import useTraverseTree from './hooks/useTraverseTree';
+// import Pagination from './Components/Pagination';
+// import PasswordGenerator from './Components/PasswordGenerator';
+import ProgressBar from './Components/ProgressBar';
 
 function App() {
 
@@ -24,12 +26,28 @@ function App() {
   //   </div>
   // );
 
-  /****** Folder createion code end */
+  /****** Folder creation code end */
+
+  /********** ProgressBar start */
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+      const timer = setInterval(() => {
+        setValue((value) => value + 1)
+      }, 100)
+      return () => clearInterval(timer)
+  },[])
+
+  /********** ProgressBar end */
 
 
   return (
     // <Pagination />
-    <PasswordGenerator />
+    // <PasswordGenerator />
+    <div className='p-10 flex flex-col items-center'>
+      <ProgressBar value={value} />
+    </div>
+    
   )
 }
 
